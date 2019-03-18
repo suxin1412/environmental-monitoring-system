@@ -1,0 +1,5 @@
+"mian.obj",
+"Usart.obj",
+"ADC.obj" 
+TO "airp" 
+RAMSIZE(256) 

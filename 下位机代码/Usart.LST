@@ -1,0 +1,64 @@
+C51 COMPILER V9.52.0.0   USART                                                             03/18/2019 15:56:22 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE USART
+OBJECT MODULE PLACED IN Usart.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE Usart.c BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          #include <STC15F2K60S2.H>
+   2          #include "usart.h"
+   3          unsigned char RXData;
+   4          bit UsartBusy = 0;
+   5          void UsartInit(void)    //115200bps@20.000MHz
+   6          {
+   7   1        SCON = 0x50;    //8???,?????
+   8   1        AUXR |= 0x01;   //??1?????2???????
+   9   1        AUXR |= 0x04;   //???2???Fosc,?1T
+  10   1        T2L = 0xD5;   //??????
+  11   1        T2H = 0xFF;   //??????
+  12   1        AUXR |= 0x10;   //?????2
+  13   1        ES  = 1;
+  14   1      }
+  15          void UsartEX() interrupt 4
+  16          {
+  17   1        if (RI)
+  18   1        {
+  19   2          RXData = SBUF;
+  20   2          RI = 0;
+  21   2        }
+  22   1        if (TI)
+  23   1        {
+  24   2          TI = 0;
+  25   2          UsartBusy = 0;
+  26   2        }
+  27   1      }
+  28          void UsartSend8Bit(unsigned char dat)
+  29          {
+  30   1        while (UsartBusy);
+  31   1        UsartBusy = 1;
+  32   1        SBUF = dat;
+  33   1      }
+  34          void UsartSendString(unsigned char *str)
+  35          {
+  36   1        while (*str)
+  37   1        {
+  38   2          UsartSend8Bit(*str);
+  39   2          str++;
+  40   2        }
+  41   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     64    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,71 @@
+C51 COMPILER V9.52.0.0   MIAN                                                              03/18/2019 15:56:22 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE MIAN
+OBJECT MODULE PLACED IN mian.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE mian.c BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          #include <STC15F2K60S2.H>
+   2          #include "usart.h"
+   3          #include "intrins.h"
+   4          #include "ADC.h"
+   5          #include "stdio.h"
+   6          void Delay10ms()    //@20.000MHz
+   7          {
+   8   1        unsigned char i, j, k;
+   9   1      
+  10   1        _nop_();
+  11   1        _nop_();
+  12   1        i = 1;
+  13   1        j = 195;
+  14   1        k = 136;
+  15   1        do
+  16   1        {
+  17   2          do
+  18   2          {
+  19   3            while (--k);
+  20   3          } while (--j);
+  21   2        } while (--i);
+  22   1      }
+  23          void main()
+  24          {
+  25   1        unsigned char PM25,MQ7,MQ135;
+  26   1        char xdata buf[60];
+  27   1        EA = 1;
+  28   1        UsartInit();
+  29   1        ADC_Init();
+  30   1        while (1)
+  31   1        {
+  32   2          PM25 = GatValue_PM25();
+  33   2          MQ7 = GatValue_MQ7();
+  34   2          MQ135 = GatValue_MQ135();
+  35   2          Delay10ms();
+  36   2          sprintf(buf,"%d",(int)PM25+1000);
+  37   2          UsartSendString(buf);
+  38   2          Delay10ms();
+  39   2          sprintf(buf,"%d",(int)MQ7+2000);
+  40   2          UsartSendString(buf);
+  41   2          Delay10ms();
+  42   2          sprintf(buf,"%d",(int)MQ135+3000);
+  43   2          UsartSendString(buf);
+  44   2        }
+  45   1      }
+  46            
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    164    ----
+   CONSTANT SIZE    =      3    ----
+   XDATA SIZE       =   ----      60
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       3
+   IDATA SIZE       =   ----    ----
+C51 COMPILER V9.52.0.0   MIAN                                                              03/18/2019 15:56:22 PAGE 2   
+
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

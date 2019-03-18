@@ -1,0 +1,7 @@
+PM2.5
+	LED->P5.4
+	OUT->P1.7
+MQ-135
+	OUT->P1.6
+MQ-7
+	OUT->P1.5
